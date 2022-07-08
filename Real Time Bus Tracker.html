@@ -1,0 +1,245 @@
+<!DOCTYPE html> œœœ
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+
+
+    <title>Real Time Bus Tracker</title>
+    <!-- MDB icon -->
+    <link rel="icon" href="img/mdb-favicon.ico" type="image/x-icon" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <!-- Google Fonts Roboto -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" />
+    <!-- MDB -->
+    <link rel="stylesheet" href="css/mdb.min.css" />
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="codingprojects.js">
+    <link rel="stylesheet" href="codingprojects.css">
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css" rel="stylesheet" />
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+        
+        .map-overlay {
+            position: absolute;
+            left: 0;
+            padding: 10px;
+        }
+    </style>
+
+
+    <link rel="stylesheet" href="fetchUrls.js">
+    <link rel="stylesheet" href="mapanimation.js">
+    <link rel="stylesheet" href="mapmarker.js">
+
+
+
+</head>
+
+<body>
+
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <!-- Container wrapper -->
+
+
+
+
+        <div class="container-fluid">
+            <!-- Toggle button -->
+
+
+
+
+            <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarRightAlignExample" aria-controls="navbarRightAlignExample" aria-expanded="false" aria-label="Toggle navigation">
+          <i class="fas fa-bars"></i>
+        </button>
+
+
+
+
+            <!-- Collapsible wrapper -->
+            <div class="collapse navbar-collapse" id="navbarRightAlignExample">
+                <!-- Left links -->
+                <container class="all-text-default">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0" class="all-text-default">
+                        <li class="nav-item" class="all-text-default">
+                            <a class="nav-link active" class="all-text-default" aria-current="page" href="#">Real Time Bus Tracker</a>
+                        </li>
+
+                        <li class="nav-item" class="all-text-default">
+                            <a class="nav-link active" class="all-text-default" aria-current="page" href="#">|</a>
+                        </li>
+
+
+                        <li class="nav-item" class="all-text-default">
+                            <a class="nav-link active" class="all-text-default" aria-current="page" href="#">Home</a>
+                        </li>
+                </container>
+                <!-- Navbar dropdown -->
+
+
+
+
+
+                <li class="nav-item dropdown" class="all-text-default">
+                    <a class="nav-link dropdown-toggle" class="all-text-default" href="#" id="navbarDropdown" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
+                Coding Projects
+              </a>
+                    <!-- Dropdown menu -->
+                    <ul class="dropdown-menu" class="all-text-default" aria-labelledby="navbarDropdown">
+                        <li>
+                            <a class="dropdown-item" class="all-text-default" href="#">PacMan Exercise</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" class="all-text-default" href="#">Eye Exercise</a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="#">Real Time Bus Tracker</a>
+                        </li>
+                    </ul>
+                </li>
+
+                </li>
+                </ul>
+
+
+
+
+            </div>
+
+        </div>
+
+        <button type="button" class="btn btn-danger " data-mdb-ripple-color="#1265f1" style="background-color:#40b1ce" onclick="move()">Show stops between MIT and Harvard <i class="fas fa-bus "></i></button>
+
+    </nav>
+
+
+
+
+
+
+    <main>
+
+        style="position: relative" style="z-index: 99;"
+
+
+        <!--Grid row-->
+
+
+
+        <div class="container-fluid">
+
+
+            <div class="map-overlay top">
+
+            </div>
+
+
+        </div>
+
+        <div id="map">
+            <script>
+                mapboxgl.accessToken = 'pk.eyJ1Ijoic29mdGV4cGVyaW1lbnQiLCJhIjoiY2tjMngyZm9rMDFvajJzczJ3aWo0bnh6aiJ9.Bc_qK9Xf8SFBXkFM_x2gpg';
+
+                var map = new mapboxgl.Map({
+                    container: 'map',
+                    style: 'mapbox://styles/mapbox/streets-v11',
+                    center: [-71.104081, 42.365554],
+                    zoom: 14
+                });
+
+                var marker = new mapboxgl.Marker()
+                    .setLngLat([-71.092761, 42.357575])
+                    .addTo(map);
+
+                const busStops = [
+                    [-71.093729, 42.359244],
+                    [-71.094915, 42.360175],
+                    [-71.095800, 42.360698],
+                    [-71.099558, 42.362953],
+                    [-71.103476, 42.365248],
+                    [-71.106067, 42.366806],
+                    [-71.108717, 42.368355],
+                    [-71.110799, 42.369192],
+                    [-71.113095, 42.370218],
+                    [-71.115476, 42.372085],
+                    [-71.117585, 42.373016],
+                    [-71.118625, 42.374863]
+                ];
+
+                let counter = 0;
+
+                function move() {
+                    setTimeout(() => {
+                        if (counter >= busStops.length) return;
+                        marker.setLngLat(busStops[counter]);
+                        counter++;
+                        move();
+                    }, 1000);
+                }
+            </script>
+
+        </div>
+
+
+
+        </div>
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- DO NOT CHANGE THIS LINE OF CODE -->
+        <script src="./codingprojects.js"></script>
+        <!-- MDB -->
+        <script type="text/javascript" src="js/mdb.min.js"></script>
+        <!-- Custom scripts -->
+        <script type="text/javascript"></script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>
